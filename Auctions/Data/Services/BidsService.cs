@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Auctions.Models;
+using Microsoft.EntityFrameworkCore;
 using OnlineAuction.Models;
 
 namespace Auctions.Data.Services

@@ -1,7 +1,7 @@
-using Auctions.Data;
-using Auctions.Data.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Auctions.Data;
+using Auctions.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +14,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddScoped<IListingsService, ListingsService>();
 builder.Services.AddScoped<IBidsService, BidsService>();
 builder.Services.AddScoped<ICommentsService, CommentsService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

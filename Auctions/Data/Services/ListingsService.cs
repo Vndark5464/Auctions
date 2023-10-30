@@ -6,6 +6,7 @@ namespace Auctions.Data.Services
     public class ListingsService : IListingsService
     {
         private readonly ApplicationDbContext _context;
+
         public ListingsService(ApplicationDbContext context)
         {
             _context = context;

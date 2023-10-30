@@ -9,6 +9,7 @@ using Auctions.Data;
 using Auctions.Models;
 using Auctions.Data.Services;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.IO;
 
 namespace Auctions.Controllers
 {
@@ -67,16 +68,24 @@ namespace Auctions.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Listing listing)
         {
+            if (listing.Image == null)
+            {
+                ModelState.AddModelError("Image", "The Image field is required.");
+                return View(listing);
+            }
+
             if (ModelState.IsValid)
             {
                 string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
                 string fileName = listing.Image.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    await listing.Image.CopyToAsync(fileStream);
-                }
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await listing.Image.CopyToAsync(fileStream);
+                    }
 
+                }
                 var listObj = new Listing
                 {
                     Title = listing.Title,
@@ -85,13 +94,12 @@ namespace Auctions.Controllers
                     ImagePath = fileName,
                     // ... other properties ...
                 };
-
                 await _listingsService.Add(listObj);
-
                 return RedirectToAction(nameof(Index));
             }
             return View(listing);
         }
+
 
         // GET: Listings/Edit/5
         /* public async Task<IActionResult> Edit(int? id)
