@@ -2,6 +2,7 @@
 using OnlineAuction.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace Auctions.Models
 {
@@ -19,5 +20,16 @@ namespace Auctions.Models
         public IdentityUser? User { get; set; }
         public List<Bid>? Bids { get; set; }
         public List<Comment>? Comments { get; set; }
-    }
+
+
+
+
+        [NotMapped] // This ensures the property isn't mapped to a database column
+        public IFormFile Image { get; set; }
+
+        // ... other properties ...
+   
+
+
+}
 }

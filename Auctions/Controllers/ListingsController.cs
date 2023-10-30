@@ -63,18 +63,18 @@ namespace Auctions.Controllers
         // POST: Listings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-       /* [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ListingVM listing)
+        public async Task<IActionResult> Create(Listing listing)
         {
-            if (listing.Image != null)
+            if (ModelState.IsValid)
             {
                 string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "Images");
                 string fileName = listing.Image.FileName;
                 string filePath = Path.Combine(uploadDir, fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
-                    listing.Image.CopyTo(fileStream);
+                    await listing.Image.CopyToAsync(fileStream);
                 }
 
                 var listObj = new Listing
@@ -82,15 +82,15 @@ namespace Auctions.Controllers
                     Title = listing.Title,
                     Description = listing.Description,
                     Price = listing.Price,
-                    IdentityUserId = listing.IdentityUserId,
                     ImagePath = fileName,
+                    // ... other properties ...
                 };
-                await _listingsService.Add(listObj);
-                return RedirectToAction("Index");
+
+                _listingsService.AddListing(listObj);
+                return RedirectToAction(nameof(Index));
             }
             return View(listing);
-
-        }*/
+        }
 
         // GET: Listings/Edit/5
         /* public async Task<IActionResult> Edit(int? id)
