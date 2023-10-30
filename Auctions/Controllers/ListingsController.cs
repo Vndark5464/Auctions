@@ -86,7 +86,8 @@ namespace Auctions.Controllers
                     // ... other properties ...
                 };
 
-                _listingsService.AddListing(listObj);
+                await _listingsService.Add(listObj);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(listing);
