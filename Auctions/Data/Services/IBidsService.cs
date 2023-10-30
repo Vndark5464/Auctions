@@ -1,6 +1,5 @@
 ﻿using System;
 using Auctions.Models;
-using OnlineAuction.Models;
 
 namespace Auctions.Data.Services
 {

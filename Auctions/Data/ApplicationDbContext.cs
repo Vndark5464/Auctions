@@ -1,7 +1,6 @@
 ﻿using Auctions.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using OnlineAuction.Models;
 
 namespace Auctions.Data;
 
