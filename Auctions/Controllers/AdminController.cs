@@ -88,5 +88,19 @@ public class AdminController : Controller
         return RedirectToAction("ManageUsers");
     }
 
-   
+    [AllowAnonymous]
+    public async Task<IActionResult> RedirectToAdminPage()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                return RedirectToAction("ManageUsers");
+            }
+        }
+
+        return RedirectToAction("Index", "Home");
+    }
 }
