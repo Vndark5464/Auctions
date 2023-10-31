@@ -18,6 +18,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IListingsService, ListingsService>();
 builder.Services.AddScoped<IBidsService, BidsService>();
 builder.Services.AddScoped<ICommentsService, CommentsService>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 var app = builder.Build();
 
