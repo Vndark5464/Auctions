@@ -79,7 +79,7 @@ public class AdminController : Controller
             await _roleManager.CreateAsync(new IdentityRole("Admin"));
         }
 
-        var user = await _userManager.FindByEmailAsync("admin123@admin.com");
+        var user = await _userManager.FindByEmailAsync("linhnhth2204006@fpt.edu.vn");
         if (user != null && !await _userManager.IsInRoleAsync(user, "Admin"))
         {
             await _userManager.AddToRoleAsync(user, "Admin");
@@ -88,19 +88,5 @@ public class AdminController : Controller
         return RedirectToAction("ManageUsers");
     }
 
-    [AllowAnonymous]
-    public async Task<IActionResult> RedirectToAdminPage()
-    {
-        if (User.Identity.IsAuthenticated)
-        {
-            var user = await _userManager.GetUserAsync(User);
-
-            if (await _userManager.IsInRoleAsync(user, "Admin"))
-            {
-                return RedirectToAction("ManageUsers");
-            }
-        }
-
-        return RedirectToAction("Index", "Home");
-    }
+   
 }
