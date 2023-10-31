@@ -2,13 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-
+using System;
 
 [Authorize(Roles = "Admin")]
 public class AdminController : Controller
 {
-
-
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
@@ -23,7 +21,6 @@ public class AdminController : Controller
         var users = _userManager.Users.ToList();
         return View(users);
     }
-
 
     public async Task<IActionResult> EditUser(string id)
     {
@@ -74,15 +71,14 @@ public class AdminController : Controller
         await _userManager.DeleteAsync(user);
         return RedirectToAction("ManageUsers");
     }
+
     public async Task<IActionResult> CreateAndAssignAdminRole()
     {
-        // Tạo vai trò "Admin" nếu chưa tồn tại
         if (!await _roleManager.RoleExistsAsync("Admin"))
         {
             await _roleManager.CreateAsync(new IdentityRole("Admin"));
         }
 
-        // Gán vai trò "Admin" cho một người dùng cụ thể (ví dụ: email là "admin@example.com")
         var user = await _userManager.FindByEmailAsync("admin123@admin.com");
         if (user != null && !await _userManager.IsInRoleAsync(user, "Admin"))
         {
@@ -90,5 +86,21 @@ public class AdminController : Controller
         }
 
         return RedirectToAction("ManageUsers");
+    }
+
+    [AllowAnonymous]
+    public async Task<IActionResult> RedirectToAdminPage()
+    {
+        if (User.Identity.IsAuthenticated)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                return RedirectToAction("ManageUsers");
+            }
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 }
